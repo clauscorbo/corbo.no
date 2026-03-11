@@ -1,21 +1,23 @@
-name: dbt CI
+name: dbt CI (slim)
 
 on:
   pull_request:
     branches: [prod]
     paths:
       - "dbt/**"
+      - ".github/workflows/**"
 
 jobs:
-  dbt-run:
-    name: dbt run (CI profile)
+  dbt-slim-ci:
+    name: dbt slim CI
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: dbt/dbtproject_corbo
 
     steps:
-      - name: Checkout code
+      # 1. Checkout PR branch
+      - name: Checkout PR branch
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -55,14 +57,22 @@ jobs:
               yaml.dump(profiles, f, default_flow_style=False)
           "
 
-      - name: dbt deps
-        run: dbt deps
+      # 2. Checkout prod branch and compile to get baseline state
+      - name: Checkout prod branch for baseline state
+        uses: actions/checkout@v4
+        with:
+          ref: prod
+          path: prod-branch
 
-      - name: dbt seed
-        run: dbt seed --target ci
+      - name: Compile dbt on prod branch (baseline)
+        run: dbt compile --target-path=prod-run-artifacts
+        working-directory: prod-branch/dbt/dbtproject_corbo
 
-      - name: dbt run
-        run: dbt run --target ci
+      # 3. Copy baseline artifacts back to PR branch
+      - name: Copy prod state artifacts
+        run: cp -r ${{ github.workspace }}/prod-branch/dbt/dbtproject_corbo/prod-run-artifacts ./prod-run-artifacts
 
-      - name: dbt test
-        run: dbt test --target ci
+      # 4. Run only modified models on PR branch
+      - name: dbt build (modified only)
+        run: dbt build --select state:modified+ --defer --state=prod-run-artifacts --target ci
+
