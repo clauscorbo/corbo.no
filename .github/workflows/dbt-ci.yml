@@ -1,0 +1,71 @@
+name: dbt CI
+
+on:
+  pull_request:
+    branches: [prod]
+    paths:
+      - "dbt/**"
+
+jobs:
+  dbt-run:
+    name: dbt run (CI profile)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dbt/dbtproject_corbo
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r ../requirements.txt
+
+      - name: Create profiles.yml
+        env:
+          DBT_CI_HOST: ${{ secrets.DBT_CI_HOST }}
+          DBT_CI_DBNAME: ${{ secrets.DBT_CI_DBNAME }}
+          DBT_CI_USER: ${{ secrets.DBT_CI_USER }}
+          DBT_CI_PASSWORD: ${{ secrets.DBT_CI_PASSWORD }}
+        run: |
+          mkdir -p ~/.dbt
+          python -c "
+          import yaml, os
+          profiles = {
+              'dbtproject_corbo': {
+                  'target': 'ci',
+                  'outputs': {
+                      'ci': {
+                          'type': 'postgres',
+                          'host': os.environ['DBT_CI_HOST'],
+                          'dbname': os.environ['DBT_CI_DBNAME'],
+                          'user': os.environ['DBT_CI_USER'],
+                          'password': os.environ['DBT_CI_PASSWORD'],
+                          'port': 5432,
+                          'schema': 'ci',
+                          'threads': 4,
+                          'sslmode': 'require',
+                      }
+                  }
+              }
+          }
+          with open(os.path.expanduser('~/.dbt/profiles.yml'), 'w') as f:
+              yaml.dump(profiles, f, default_flow_style=False)
+          "
+
+      - name: dbt deps
+        run: dbt deps
+
+      - name: dbt seed
+        run: dbt seed --target ci
+
+      - name: dbt run
+        run: dbt run --target ci
+
+      - name: dbt test
+        run: dbt test --target ci
