@@ -1,14 +1,14 @@
-name: dbt CI
+name: dbt CD
 
 on:
-  pull_request:
+  push:
     branches: [prod]
     paths:
       - "dbt/**"
 
 jobs:
-  dbt-run:
-    name: dbt run (CI profile)
+  dbt-deploy:
+    name: dbt build (prod)
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -35,16 +35,16 @@ jobs:
           import yaml, os
           profiles = {
               'dbtproject_corbo': {
-                  'target': 'ci',
+                  'target': 'prod',
                   'outputs': {
-                      'ci': {
+                      'prod': {
                           'type': 'postgres',
                           'host': 'ep-falling-hall-a90j0106-pooler.gwc.azure.neon.tech',
-                          'dbname': 'ci',
+                          'dbname': 'prod',
                           'user': 'neondb_owner',
                           'password': os.environ['DBT_PASSWORD'],
                           'port': 5432,
-                          'schema': 'ci',
+                          'schema': 'prod',
                           'threads': 4,
                           'sslmode': 'require',
                       }
@@ -59,10 +59,10 @@ jobs:
         run: dbt deps
 
       - name: dbt seed
-        run: dbt seed --target ci
+        run: dbt seed --target prod
 
       - name: dbt run
-        run: dbt run --target ci
+        run: dbt run --target prod
 
       - name: dbt test
-        run: dbt test --target ci
+        run: dbt test --target prod
