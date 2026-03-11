@@ -1,0 +1,68 @@
+name: dbt CD
+
+on:
+  push:
+    branches: [prod]
+    paths:
+      - "dbt/**"
+
+jobs:
+  dbt-deploy:
+    name: dbt build (prod)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dbt/dbtproject_corbo
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r ../requirements.txt
+
+      - name: Create profiles.yml
+        env:
+          DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+        run: |
+          mkdir -p ~/.dbt
+          python -c "
+          import yaml, os
+          profiles = {
+              'dbtproject_corbo': {
+                  'target': 'prod',
+                  'outputs': {
+                      'prod': {
+                          'type': 'postgres',
+                          'host': 'ep-falling-hall-a90j0106-pooler.gwc.azure.neon.tech',
+                          'dbname': 'prod',
+                          'user': 'neondb_owner',
+                          'password': os.environ['DBT_PASSWORD'],
+                          'port': 5432,
+                          'schema': 'prod',
+                          'threads': 4,
+                          'sslmode': 'require',
+                      }
+                  }
+              }
+          }
+          with open(os.path.expanduser('~/.dbt/profiles.yml'), 'w') as f:
+              yaml.dump(profiles, f, default_flow_style=False)
+          "
+
+      - name: dbt deps
+        run: dbt deps
+
+      - name: dbt seed
+        run: dbt seed --target prod
+
+      - name: dbt run
+        run: dbt run --target prod
+
+      - name: dbt test
+        run: dbt test --target prod
