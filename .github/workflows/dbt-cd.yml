@@ -1,4 +1,4 @@
-name: dbt CD
+name: dbt CD (slim)
 
 on:
   push:
@@ -8,15 +8,18 @@ on:
 
 jobs:
   dbt-deploy:
-    name: dbt build (prod)
+    name: dbt slim CD (prod)
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: dbt/dbtproject_corbo
 
     steps:
-      - name: Checkout code
+      # 1. Checkout current prod (after merge)
+      - name: Checkout prod (current)
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -55,7 +58,23 @@ jobs:
               yaml.dump(profiles, f, default_flow_style=False)
           "
 
-      - name: dbt build
-        run: dbt build
+      # 2. Compile baseline state from the commit before merge
+      - name: Checkout previous prod state
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.before }}
+          path: prod-previous
+
+      - name: Compile dbt on previous prod (baseline)
+        run: dbt compile --target-path=prod-run-artifacts
+        working-directory: prod-previous/dbt/dbtproject_corbo
+
+      # 3. Copy baseline artifacts to current checkout
+      - name: Copy previous state artifacts
+        run: cp -r ${{ github.workspace }}/prod-previous/dbt/dbtproject_corbo/prod-run-artifacts ./prod-run-artifacts
+
+      # 4. Run only modified models on prod
+      - name: dbt build (modified only)
+        run: dbt build --select state:modified+ --defer --state=prod-run-artifacts --target prod
 
 
