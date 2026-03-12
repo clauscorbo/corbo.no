@@ -1,10 +1,10 @@
 name: dbt CD (slim)
 
 on:
-  push:
-    branches: [prod]
-    paths:
-      - "dbt/**"
+  workflow_call:
+    secrets:
+      DBT_PASSWORD:
+        required: true
 
 jobs:
   dbt-deploy:

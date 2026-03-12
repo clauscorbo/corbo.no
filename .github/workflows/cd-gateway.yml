@@ -1,0 +1,36 @@
+name: CD Gateway
+
+on:
+  push:
+    branches: [prod]
+
+jobs:
+  # ─── Detect what changed ───────────────────────────────────
+  detect-changes:
+    name: Detect changes
+    runs-on: ubuntu-latest
+    outputs:
+      dbt: ${{ steps.filter.outputs.dbt }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Path filter
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          base: ${{ github.event.before }}
+          filters: |
+            dbt:
+              - 'dbt/**'
+
+  # ─── Conditional: dbt CD ───────────────────────────────────
+  dbt-cd:
+    name: dbt CD
+    needs: detect-changes
+    if: needs.detect-changes.outputs.dbt == 'true'
+    uses: ./.github/workflows/dbt-cd.yml
+    secrets:
+      DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
