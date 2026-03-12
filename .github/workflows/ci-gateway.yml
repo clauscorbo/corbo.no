@@ -17,12 +17,7 @@ jobs:
         uses: ibiqlik/action-yamllint@v3
         with:
           file_or_dir: "."
-          config_data: |
-            extends: default
-            rules:
-              line-length:
-                max: 200
-              truthy: disable
+          config_file: ".yamllint.yml"
 
       - name: Detect secrets
         uses: trufflesecurity/trufflehog@main

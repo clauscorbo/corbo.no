@@ -74,4 +74,3 @@ jobs:
       # 4. Run only modified models on PR branch
       - name: dbt build (modified only)
         run: dbt build --select state:modified+ --defer --state=prod-run-artifacts --target ci
-
