@@ -6,6 +6,8 @@ sources:
     description: "Raw data loaded into staging by Python load scripts."
     tables:
       - name: stg_ssb_08092
-        description: "Norwegian parliamentary election results from SSB table 08092."
+        description: "Storting election. Valid votes, by political parties, contents, every 4th year and region."
       - name: stg_ssb_08219
-        description: "Elected parliament representatives by gender, party, and district from SSB table 08219."
+        description: "Elected representatives, by sex, party/electoral list and electoral district 1945 - 2025."
+      - name: stg_ssb_09624
+        description: "General election. Voters (per cent), by political parties, contents, every 4th year and sex"

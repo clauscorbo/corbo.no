@@ -12,6 +12,7 @@ from sources.ssb import SSBLoader
 LOADS = [
     SSBLoader("08092"),
     SSBLoader("08219"),
+    SSBLoader("09624"),
 ]
 
 
