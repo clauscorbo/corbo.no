@@ -5,6 +5,9 @@ on:
     - cron: '0 6 * * *'  # Every day at 06:00 UTC
   workflow_dispatch:      # Allow manual trigger from GitHub UI
 
+permissions:
+  contents: write
+
 jobs:
   load-and-build:
     name: Extract, Load & Transform
@@ -67,3 +70,19 @@ jobs:
       - name: dbt build
         working-directory: dbt/dbtproject_corbo
         run: dbt build
+
+      - name: dbt docs generate
+        working-directory: dbt/dbtproject_corbo
+        run: dbt docs generate
+
+      - name: Commit dbt docs to repo
+        run: |
+          mkdir -p site/public/dbt-docs
+          cp dbt/dbtproject_corbo/target/index.html site/public/dbt-docs/
+          cp dbt/dbtproject_corbo/target/manifest.json site/public/dbt-docs/
+          cp dbt/dbtproject_corbo/target/catalog.json site/public/dbt-docs/
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add site/public/dbt-docs/
+          git diff --cached --quiet || git commit -m "chore: update dbt docs [skip ci]"
+          git push
