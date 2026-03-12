@@ -60,21 +60,21 @@ models:
         description: "Number of persons for the given year, sex, and marital status."
 
   - name: sil_ssb_election_votes
-    description: "Storting election valid votes per region, party, and election year. Pivots SSB table 08092 into vote count and percentage columns."
+    description: "Norwegian national parliamentary election (Stortingsvalget). Valid votes per region, party, and election year. Pivots SSB table 08092 into vote count and percentage columns."
     columns:
       - name: region
         description: "Electoral district or region name."
       - name: party
         description: "Name of the political party."
       - name: election_year
-        description: "Election year (integer, every 4th year)."
+        description: "National parliamentary election year (integer, every 4th year)."
       - name: valid_votes
         description: "Number of valid votes cast for the party in the region."
       - name: valid_votes_pct
         description: "Valid votes as a percentage of total valid votes in the region."
 
   - name: sil_ssb_election_representatives
-    description: "Elected representatives per region, party, sex, and election year. Source: SSB table 08219."
+    description: "Norwegian national parliamentary election (Stortingsvalget). Elected representatives per region, party, sex, and election year. Source: SSB table 08219."
     columns:
       - name: region
         description: "Electoral district or region name."
@@ -83,33 +83,33 @@ models:
       - name: party
         description: "Name of the political party or electoral list."
       - name: election_year
-        description: "Election year (integer, every 4th year)."
+        description: "National parliamentary election year (integer, every 4th year)."
       - name: representatives
         description: "Number of elected representatives."
 
   - name: sil_ssb_election_voters
-    description: "General election voter percentage per party, sex, and election year. Source: SSB table 09624."
+    description: "Norwegian national parliamentary election (Stortingsvalget). Voter percentage per party, sex, and election year. Source: SSB table 09624."
     columns:
       - name: party
         description: "Name of the political party."
       - name: sex
         description: "Sex category, e.g. 'Males', 'Females'."
       - name: election_year
-        description: "Election year (integer, every 4th year)."
+        description: "National parliamentary election year (integer, every 4th year)."
       - name: voters_pct
         description: "Percentage of voters who voted for this party, broken down by sex."
 
   - name: sil_ssb_election_party_support
-    description: "General election party support by education level, sex, and election year. Source: SSB table 13555."
+    description: "Norwegian national parliamentary election (Stortingsvalget). Party support by education level, sex, and election year. Source: SSB table 13555."
     columns:
       - name: party
         description: "Name of the political party."
       - name: education_level
-        description: "Education level, e.g. 'Basic school', 'Upper secondary education', 'University and college, short', 'University and college, long'."
+        description: "Education level, e.g. 'Basic school level', 'Upper secondary level', 'Higher education, short', 'Higher education, long'."
       - name: sex
         description: "Sex category, e.g. 'Males', 'Females'."
       - name: election_year
-        description: "Election year (integer, every 4th year)."
+        description: "National parliamentary election year (integer, every 4th year)."
       - name: support_pct
         description: "Percentage of support for the party among voters with this education level and sex."
 

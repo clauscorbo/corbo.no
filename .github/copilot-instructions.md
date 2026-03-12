@@ -1,4 +1,3 @@
-# Copilot Instructions — corbo.no
 
 ## Architecture
 

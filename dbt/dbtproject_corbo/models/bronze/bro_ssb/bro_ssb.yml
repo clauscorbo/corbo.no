@@ -26,7 +26,7 @@ models:
         description: "The raw numeric value (person count) for the given sex, marital status, and year."
 
   - name: bro_ssb_08092
-    description: "Bronze pass-through of SSB table 08092 — Storting election valid votes by region and party."
+    description: "Bronze pass-through of SSB table 08092 — Norwegian national parliamentary election (Stortingsvalget) valid votes by region and party."
     columns:
       - name: region
         description: "Electoral district or region name."
@@ -40,7 +40,7 @@ models:
         description: "The raw numeric value for votes or vote percentage."
 
   - name: bro_ssb_08219
-    description: "Bronze pass-through of SSB table 08219 — elected representatives by sex, party, and district."
+    description: "Bronze pass-through of SSB table 08219 — Norwegian national parliamentary election (Stortingsvalget) elected representatives by sex, party, and district."
     columns:
       - name: region
         description: "Electoral district or region name."
@@ -56,7 +56,7 @@ models:
         description: "The raw numeric value (number of elected representatives)."
 
   - name: bro_ssb_09624
-    description: "Bronze pass-through of SSB table 09624 — general election voter percentage by party and sex."
+    description: "Bronze pass-through of SSB table 09624 — Norwegian national parliamentary election (Stortingsvalget) voter percentage by party and sex."
     columns:
       - name: political parties
         description: "Name of the political party."
@@ -108,7 +108,7 @@ models:
         description: "The raw numeric value (count of living persons with this name)."
 
   - name: bro_ssb_13555
-    description: "Bronze pass-through of SSB table 13555 — general election party support by sex and education level."
+    description: "Bronze pass-through of SSB table 13555 — Norwegian national parliamentary election (Stortingsvalget) party support by sex and education level."
     columns:
       - name: political parties
         description: "Name of the political party."

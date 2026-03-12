@@ -1,0 +1,165 @@
+version: 2
+
+models:
+  - name: gol_fact_population
+    description: >
+      National population fact table. Grain: year × sex.
+      Combines vital statistics, age-band population counts, and
+      marital-status counts into a single wide table.
+    columns:
+      - name: year
+        description: "Calendar year."
+      - name: sex
+        description: "Sex category: 'Males' or 'Females'."
+      - name: persons_0_17
+        description: "Population aged 0–17."
+      - name: persons_18_29
+        description: "Population aged 18–29."
+      - name: persons_30_49
+        description: "Population aged 30–49."
+      - name: persons_50_66
+        description: "Population aged 50–66."
+      - name: persons_67_plus
+        description: "Population aged 67+."
+      - name: persons_total
+        description: "Total population for this sex."
+      - name: persons_unmarried
+        description: "Persons with marital status Unmarried."
+      - name: persons_married
+        description: "Persons with marital status Married."
+      - name: persons_widowed
+        description: "Persons with marital status Widowed/widower."
+      - name: persons_divorced
+        description: "Persons with marital status Divorced."
+      - name: persons_separated
+        description: "Persons with marital status Separated."
+      - name: persons_reg_partner
+        description: "Persons with marital status Registered partner."
+      - name: persons_sep_partner
+        description: "Persons with marital status Separated partner."
+      - name: persons_surv_partner
+        description: "Persons with marital status Surviving partner."
+      - name: population_jan1
+        description: "Total population as of 1 January (national, not sex-split)."
+      - name: livebirths_total
+        description: "Total live births during the year (national)."
+      - name: livebirths_out_of_wedlock
+        description: "Live births outside of marriage (national)."
+      - name: late_fetal_deaths
+        description: "Stillbirths (national)."
+      - name: deaths_total
+        description: "Total deaths during the year (national)."
+      - name: deaths_under_1yr
+        description: "Deaths of children under 1 year (national)."
+      - name: natural_growth
+        description: "Live births minus deaths (national)."
+      - name: livebirth_rate_per_1000
+        description: "Live births per 1 000 population (national)."
+      - name: death_rate_per_1000
+        description: "Deaths per 1 000 population (national)."
+      - name: marriages_contracted
+        description: "Marriages contracted during the year (national)."
+      - name: divorces
+        description: "Divorces during the year (national)."
+      - name: in_migration
+        description: "Persons immigrating into Norway (national)."
+      - name: emigration
+        description: "Persons emigrating from Norway (national)."
+      - name: net_migration
+        description: "In-migration minus emigration (national)."
+      - name: population_increase_abs
+        description: "Absolute population increase (national)."
+      - name: population_increase_pct
+        description: "Population increase as a percentage (national)."
+
+  - name: gol_fact_election
+    description: >
+      Norwegian national parliamentary election (Stortingsvalget) results.
+      Grain: election_year × region × party.
+      Votes cast and seats won per party in each electoral district.
+      Every column is a hard fact from the same event.
+    columns:
+      - name: election_year
+        description: "National parliamentary election year (every 4th year)."
+      - name: region
+        description: "Electoral district or region name."
+      - name: party
+        description: "Political party name."
+      - name: valid_votes
+        description: "Valid votes for this party in this region."
+      - name: valid_votes_pct
+        description: "Valid votes as percentage of total valid votes in this region."
+      - name: region_total_votes
+        description: "Total valid votes across all parties in this region."
+      - name: representatives_male
+        description: "Male elected representatives for this party in this region."
+      - name: representatives_female
+        description: "Female elected representatives for this party in this region."
+      - name: representatives_total
+        description: "Total elected representatives for this party in this region."
+      - name: party_rank_in_region
+        description: "Rank of this party by vote count within the region (1 = most votes)."
+
+  - name: gol_fact_election_voters
+    description: >
+      Norwegian national parliamentary election (Stortingsvalget) voter surveys.
+      Grain: election_year × party.
+      Survey-based data on who votes for whom, with sex and education
+      level pivoted into columns. Covers the ~10 major parties in SSB surveys.
+    columns:
+      - name: election_year
+        description: "National parliamentary election year (every 4th year)."
+      - name: party
+        description: "Political party name (major parties only)."
+      - name: voters_pct
+        description: "Overall voter percentage for this party (both sexes)."
+      - name: voters_pct_male
+        description: "Voter percentage among male voters."
+      - name: voters_pct_female
+        description: "Voter percentage among female voters."
+      - name: support_pct_basic
+        description: "Support % among voters with basic school level education (both sexes)."
+      - name: support_pct_upper_secondary
+        description: "Support % among voters with upper secondary level education (both sexes)."
+      - name: support_pct_higher_short
+        description: "Support % among voters with short higher education (both sexes)."
+      - name: support_pct_higher_long
+        description: "Support % among voters with long higher education (both sexes)."
+      - name: support_pct_basic_male
+        description: "Support % among male voters with basic school level education."
+      - name: support_pct_upper_secondary_male
+        description: "Support % among male voters with upper secondary level education."
+      - name: support_pct_higher_short_male
+        description: "Support % among male voters with short higher education."
+      - name: support_pct_higher_long_male
+        description: "Support % among male voters with long higher education."
+      - name: support_pct_basic_female
+        description: "Support % among female voters with basic school level education."
+      - name: support_pct_upper_secondary_female
+        description: "Support % among female voters with upper secondary level education."
+      - name: support_pct_higher_short_female
+        description: "Support % among female voters with short higher education."
+      - name: support_pct_higher_long_female
+        description: "Support % among female voters with long higher education."
+
+  - name: gol_fact_name
+    description: >
+      Name popularity fact table. Grain: year × first_name.
+      Combines born-count and living-count with rankings and trends.
+    columns:
+      - name: first_name
+        description: "The first name."
+      - name: year
+        description: "Calendar year."
+      - name: born_persons
+        description: "Number of persons born with this name in the given year."
+      - name: born_persons_pct
+        description: "Percentage of all born persons given this name."
+      - name: living_persons
+        description: "Number of living persons with this name in the given year."
+      - name: living_persons_yoy_change
+        description: "Year-over-year change in living persons with this name."
+      - name: rank_by_born
+        description: "Rank of this name by born count within the year (1 = most popular)."
+      - name: rank_by_living
+        description: "Rank of this name by living count within the year (1 = most popular)."
