@@ -12,12 +12,12 @@ export default function Home() {
         </p>
 
         <nav className="mt-4 flex flex-wrap justify-center gap-4">
-          <Link
-            href="/dbt-docs"
+          <a
+            href="/dbt-docs/index.html"
             className="rounded-lg border border-zinc-700 bg-zinc-900 px-6 py-3 text-sm font-medium text-zinc-200 transition-colors hover:border-zinc-500 hover:bg-zinc-800"
           >
             📊 dbt Documentation
-          </Link>
+          </a>
         </nav>
       </main>
 
