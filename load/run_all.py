@@ -1,21 +1,28 @@
-"""Main entrypoint — runs all load scripts."""
+"""Load all tables."""
 
-import sys
 import os
+import sys
 
-# Allow imports from load/ directory
 sys.path.insert(0, os.path.dirname(__file__))
 
-from sources.example_api import load_example_data
+from sources.ssb import SSBLoader
+
+
+# What to load
+LOADS = [
+    SSBLoader("08092"),
+    SSBLoader("08219"),
+]
 
 
 def main() -> None:
     target = os.environ.get("LOAD_TARGET", "prod")
-    print(f"Running loads against target: {target}")
+    print(f"Target: {target}\n")
 
-    load_example_data(target)
+    for loader in LOADS:
+        loader.load(target)
 
-    print("All loads completed.")
+    print("\nDone.")
 
 
 if __name__ == "__main__":

@@ -1,35 +1,41 @@
 # Load
 
-Extract & Load scripts for the corbo.no data platform.
+Fetch data from sources, dump into staging. Minimal.
 
 ## Structure
 
 ```
 load/
-├── db.py                 # Shared database connection helper
-├── run_all.py            # Entrypoint — runs all load scripts
-├── requirements.txt      # Python dependencies
-└── sources/              # One script per data source
-    └── example_api.py    # Example: loads from JSONPlaceholder API
+├── db.py             # Database connection
+├── loader.py         # Base DataLoader class
+├── run_all.py        # What to load (the orchestrator)
+├── requirements.txt
+└── sources/          # One file per source type
+    └── ssb.py        # SSB (Statistics Norway)
 ```
 
 ## Usage
 
 ```bash
-# Set your database password
 export DBT_PASSWORD="your_password"
-
-# Run all loads
 python load/run_all.py
-
-# Or run a single source
-python load/sources/example_api.py
 ```
 
-## Adding a new source
+## Adding a new table
 
-1. Create a new file in `sources/` (e.g. `sources/weather_api.py`)
-2. Use `db.get_connection()` from `db.py` for the database connection
-3. Load data into `raw.*` tables
-4. Import and call it from `run_all.py`
-5. Create a corresponding dbt source + bronze model in `dbt/`
+Add a line to `LOADS` in `run_all.py`:
+
+```python
+LOADS = [
+    SSBLoader("08092"),
+    SSBLoader("12345"),  # new
+]
+```
+
+Tables land in staging as `stg_{source}_{table}`, e.g. `stg_ssb_08092`.
+
+## Adding a new source type
+
+1. Create a file in `sources/` (e.g. `sources/my_api.py`)
+2. Subclass `DataLoader`, implement `fetch()` → returns a DataFrame
+3. Use it in `run_all.py`

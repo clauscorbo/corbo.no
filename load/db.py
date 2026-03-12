@@ -1,5 +1,5 @@
 import os
-import psycopg2
+from sqlalchemy import create_engine, text
 
 # Each environment connects to its own database.
 # The staging schema prefix matches the dbt profile's `schema` value.
@@ -44,23 +44,22 @@ def get_schema(target: str = "prod") -> str:
     return f"{prefix}_staging"
 
 
-def get_connection(target: str = "prod") -> psycopg2.extensions.connection:
-    """Get a connection to the Neon Postgres database.
-
-    Args:
-        target: Which environment to connect to (dev, ci, prod).
-    """
-    return psycopg2.connect(
-        **DB_CONFIG,
-        dbname=TARGET_DB_MAP.get(target, "prod"),
-        password=os.environ["DBT_PASSWORD"],
+def get_engine(target: str = "prod"):
+    """Get a SQLAlchemy engine for the Neon Postgres database."""
+    dbname = TARGET_DB_MAP.get(target, "prod")
+    password = os.environ["DBT_PASSWORD"]
+    url = (
+        f"postgresql://{DB_CONFIG['user']}:{password}"
+        f"@{DB_CONFIG['host']}:{DB_CONFIG['port']}/{dbname}"
+        f"?sslmode={DB_CONFIG['sslmode']}"
     )
+    return create_engine(url)
 
 
-def ensure_staging_schema(conn: psycopg2.extensions.connection, target: str = "prod") -> None:
+def ensure_staging_schema(engine, target: str = "prod") -> None:
     """Create the staging schema if it doesn't exist."""
     schema = get_schema(target)
-    with conn.cursor() as cur:
-        cur.execute(f"CREATE SCHEMA IF NOT EXISTS {schema}")
-    conn.commit()
+    with engine.connect() as conn:
+        conn.execute(text(f"CREATE SCHEMA IF NOT EXISTS {schema}"))
+        conn.commit()
 
