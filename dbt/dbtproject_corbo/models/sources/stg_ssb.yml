@@ -6,8 +6,20 @@ sources:
     description: "Raw data loaded into staging by Python load scripts."
     tables:
       - name: stg_ssb_08092
-        description: "Storting election. Valid votes, by political parties, contents, every 4th year and region."
+        description: "Norwegian national parliamentary election (Stortingsvalget). Valid votes, by political parties, contents, every 4th year and region."
       - name: stg_ssb_08219
-        description: "Elected representatives, by sex, party/electoral list and electoral district 1945 - 2025."
+        description: "Norwegian national parliamentary election (Stortingsvalget). Elected representatives, by sex, party/electoral list and electoral district 1945 - 2025."
       - name: stg_ssb_09624
-        description: "General election. Voters (per cent), by political parties, contents, every 4th year and sex"
+        description: "Norwegian national parliamentary election (Stortingsvalget). Voters (per cent), by political parties, contents, every 4th year and sex."
+      - name: stg_ssb_13555
+        description: "Norwegian national parliamentary election (Stortingsvalget). Support for the different parties, by sex and level of education (per cent) 1997-2025."
+      - name: stg_ssb_10211
+        description: "Population, by sex and age 1846-2026"
+      - name: stg_ssb_05813
+        description: "Resident population, by sex and marital status 1769-2026"
+      - name: stg_ssb_05803
+        description: "Population 1 January and population changes during the calendar year 1735-2026"
+      - name: stg_ssb_10467
+        description: "Born persons, by girls' name and boys' name 1880-2025"
+      - name: stg_ssb_10501
+        description: "Persons, by girls' name and boys' name 2013-2025"

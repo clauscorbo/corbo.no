@@ -17,7 +17,7 @@ class SSBLoader(DataLoader):
         self.codelists = codelists or {}
 
     def _build_query(self) -> dict:
-        meta = requests.get(f"{BASE}/{self.table}/metadata").json()
+        meta = requests.get(f"{BASE}/{self.table}/metadata?lang=en").json()
         selection = []
         for var_code in meta["id"]:
             entry = {"variableCode": var_code, "valueCodes": ["*"]}
@@ -27,7 +27,7 @@ class SSBLoader(DataLoader):
         return {"selection": selection, "outputFormat": "json_stat2"}
 
     def fetch(self) -> pd.DataFrame:
-        url = f"{BASE}/{self.table}/data"
+        url = f"{BASE}/{self.table}/data?lang=en"
         query = self._build_query()
         resp = requests.post(url, json=query)
         resp.raise_for_status()
