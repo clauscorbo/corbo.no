@@ -24,10 +24,7 @@ LOADS = [
 
 
 def main() -> None:
-    target = os.environ.get("LOAD_TARGET")
-    if not target:
-        print("Error: LOAD_TARGET env var is required (e.g. dev, ci, prod).")
-        sys.exit(1)
+    target = os.environ.get("LOAD_TARGET", "prod")
     print(f"Target: {target}\n")
 
     for loader in LOADS:
