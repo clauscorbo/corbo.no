@@ -13,6 +13,13 @@ LOADS = [
     SSBLoader("08092", codelists={"Region": "vs_ValgdistrikterMedBergen"}),
     SSBLoader("08219"),
     SSBLoader("09624"),
+    SSBLoader("13555"),
+    SSBLoader("10211"),
+    SSBLoader("05813"),
+    SSBLoader("05803"),
+    SSBLoader("10467"),
+    SSBLoader("10501"),
+
 ]
 
 
