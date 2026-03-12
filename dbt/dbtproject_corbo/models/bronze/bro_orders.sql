@@ -6,4 +6,4 @@ SELECT
     unit_price,
     order_date::DATE AS order_date,
     status
-FROM {{ ref('seed_raw_orders') }}
+FROM {{ source('staging', 'orders') }}
