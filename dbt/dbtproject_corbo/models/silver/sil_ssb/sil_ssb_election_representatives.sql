@@ -12,7 +12,7 @@ WITH
   ),
   sil_ssb_election_representatives AS (
     SELECT
-      "region"                        AS electoral_district,
+      "region"                        AS region,
       "sex"                           AS sex,
       "political parties"             AS party,
       "every 4th year"::integer       AS election_year,
@@ -21,7 +21,7 @@ WITH
       bro
   )
 SELECT
-  electoral_district,
+  region,
   sex,
   party,
   election_year,
@@ -29,4 +29,4 @@ SELECT
 FROM
   sil_ssb_election_representatives
 ORDER BY
-  election_year, electoral_district, party, sex
+  election_year, region, party, sex
