@@ -11,4 +11,3 @@ sources:
         description: "Elected representatives, by sex, party/electoral list and electoral district 1945 - 2025."
       - name: stg_ssb_09624
         description: "General election. Voters (per cent), by political parties, contents, every 4th year and sex"
-
