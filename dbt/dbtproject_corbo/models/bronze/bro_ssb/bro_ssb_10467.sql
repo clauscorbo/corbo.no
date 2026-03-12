@@ -7,9 +7,9 @@ with stg_ssb_10467 as (
 bro_ssb_10467 AS (
 
 select
-    "fornavn",
-    "statistikkvariabel",
-    "år",
+    "first name",
+    "contents",
+    "year",
     "value"
 from stg_ssb_10467
 

@@ -8,9 +8,9 @@ bro_ssb_08092 AS (
 
 select
     "region",
-    "politisk parti",
-    "statistikkvariabel",
-    "fireårlig",
+    "political parties",
+    "contents",
+    "every 4th year",
     "value"
 from stg_ssb_08092
 

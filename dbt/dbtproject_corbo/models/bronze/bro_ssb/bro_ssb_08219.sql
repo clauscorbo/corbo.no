@@ -8,10 +8,10 @@ bro_ssb_08219 AS (
 
 select
     "region",
-    "kjønn",
-    "politisk parti",
-    "statistikkvariabel",
-    "fireårlig",
+    "sex",
+    "political parties",
+    "contents",
+    "every 4th year",
     "value"
 from stg_ssb_08219
 

@@ -7,10 +7,10 @@ with stg_ssb_09624 as (
 bro_ssb_09624 AS (
 
 select
-    "politisk parti",
-    "kjønn",
-    "statistikkvariabel",
-    "fireårlig",
+    "political parties",
+    "sex",
+    "contents",
+    "every 4th year",
     "value"
 from stg_ssb_09624
 

@@ -7,10 +7,10 @@ with stg_ssb_05813 as (
 bro_ssb_05813 AS (
 
 select
-    "kjønn",
-    "sivilstand",
-    "statistikkvariabel",
-    "år",
+    "sex",
+    "marital status",
+    "contents",
+    "year",
     "value"
 from stg_ssb_05813
 

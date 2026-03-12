@@ -7,8 +7,8 @@ with stg_ssb_05803 as (
 bro_ssb_05803 AS (
 
 select
-    "statistikkvariabel",
-    "år",
+    "contents",
+    "year",
     "value"
 from stg_ssb_05803
 

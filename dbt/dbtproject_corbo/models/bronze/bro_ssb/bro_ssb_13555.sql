@@ -7,11 +7,11 @@ with stg_ssb_13555 as (
 bro_ssb_13555 AS (
 
 select
-    "politisk parti",
-    "utdanningsnivå",
-    "kjønn",
-    "statistikkvariabel",
-    "fireårlig",
+    "political parties",
+    "level of education",
+    "sex",
+    "contents",
+    "every 4th year",
     "value"
 from stg_ssb_13555
 

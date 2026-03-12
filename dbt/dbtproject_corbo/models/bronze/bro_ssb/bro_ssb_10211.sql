@@ -7,10 +7,10 @@ with stg_ssb_10211 as (
 bro_ssb_10211 AS (
 
 select
-    "alder",
-    "kjønn",
-    "statistikkvariabel",
-    "år",
+    "age",
+    "sex",
+    "contents",
+    "year",
     "value"
 from stg_ssb_10211
 
