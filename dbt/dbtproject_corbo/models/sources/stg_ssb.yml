@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: stg_ssb
+    schema: "{{ target.schema ~ '_staging' }}"
+    description: "Raw data loaded into staging by Python load scripts."
+    tables:
+      - name: stg_ssb_08092
+        description: "Norwegian parliamentary election results from SSB table 08092."
+      - name: stg_ssb_08219
+        description: "Elected parliament representatives by gender, party, and district from SSB table 08219."

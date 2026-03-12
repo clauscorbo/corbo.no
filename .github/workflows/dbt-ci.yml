@@ -1,11 +1,10 @@
 name: dbt CI (slim)
 
 on:
-  pull_request:
-    branches: [prod]
-    paths:
-      - "dbt/**"
-      - ".github/workflows/**"
+  workflow_call:
+    secrets:
+      DBT_PASSWORD:
+        required: true
 
 jobs:
   dbt-slim-ci:
@@ -27,6 +26,15 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r ../requirements.txt
+
+      - name: Install load dependencies
+        run: pip install -r ../../load/requirements.txt
+
+      - name: Run load scripts (populate CI staging)
+        env:
+          DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+          LOAD_TARGET: ci
+        run: python ../../load/run_all.py
 
       - name: Create profiles.yml
         env:
@@ -75,4 +83,3 @@ jobs:
       # 4. Run only modified models on PR branch
       - name: dbt build (modified only)
         run: dbt build --select state:modified+ --defer --state=prod-run-artifacts --target ci
-

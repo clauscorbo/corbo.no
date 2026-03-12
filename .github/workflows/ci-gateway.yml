@@ -1,0 +1,53 @@
+name: CI Gateway
+
+on:
+  pull_request:
+    branches: [prod]
+
+jobs:
+  # ─── Always runs ───────────────────────────────────────────
+  common-checks:
+    name: Common checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: YAML lint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: "."
+          config_file: ".yamllint.yml"
+
+      - name: Detect secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --only-verified
+
+  # ─── Detect what changed ───────────────────────────────────
+  detect-changes:
+    name: Detect changes
+    runs-on: ubuntu-latest
+    outputs:
+      dbt: ${{ steps.filter.outputs.dbt }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Path filter
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            dbt:
+              - 'dbt/**'
+              - 'load/**'
+
+  # ─── Conditional: dbt CI ───────────────────────────────────
+  dbt-ci:
+    name: dbt CI
+    needs: [common-checks, detect-changes]
+    if: needs.detect-changes.outputs.dbt == 'true'
+    uses: ./.github/workflows/dbt-ci.yml
+    secrets:
+      DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}

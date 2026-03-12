@@ -1,0 +1,65 @@
+name: Daily data load
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Every day at 06:00 UTC
+  workflow_dispatch:      # Allow manual trigger from GitHub UI
+
+jobs:
+  load-and-build:
+    name: Extract, Load & Transform
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install load dependencies
+        run: pip install -r load/requirements.txt
+
+      - name: Run load scripts
+        env:
+          DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+          LOAD_TARGET: prod
+        run: python load/run_all.py
+
+      - name: Install dbt dependencies
+        run: pip install -r dbt/requirements.txt
+
+      - name: Create dbt profiles.yml
+        env:
+          DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+        run: |
+          mkdir -p ~/.dbt
+          python -c "
+          import yaml, os
+          profiles = {
+              'dbtproject_corbo': {
+                  'target': 'prod',
+                  'outputs': {
+                      'prod': {
+                          'type': 'postgres',
+                          'host': 'ep-falling-hall-a90j0106-pooler.gwc.azure.neon.tech',
+                          'dbname': 'prod',
+                          'user': 'neondb_owner',
+                          'password': os.environ['DBT_PASSWORD'],
+                          'port': 5432,
+                          'schema': 'prod',
+                          'threads': 4,
+                          'sslmode': 'require',
+                      }
+                  }
+              }
+          }
+          with open(os.path.expanduser('~/.dbt/profiles.yml'), 'w') as f:
+              yaml.dump(profiles, f, default_flow_style=False)
+          "
+
+      - name: dbt build
+        working-directory: dbt/dbtproject_corbo
+        run: dbt build
