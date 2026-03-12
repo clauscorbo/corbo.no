@@ -1,0 +1,124 @@
+version: 2
+
+models:
+  - name: bro_ssb_05803
+    description: "Bronze pass-through of SSB table 05803 — population and population changes (national, yearly)."
+    columns:
+      - name: contents
+        description: "The SSB metric label, e.g. 'Population 1 January', 'Livebirths, total', 'Death, total'."
+      - name: year
+        description: "Calendar year as a string."
+      - name: value
+        description: "The raw numeric value for the given metric and year."
+
+  - name: bro_ssb_05813
+    description: "Bronze pass-through of SSB table 05813 — resident population by sex and marital status."
+    columns:
+      - name: sex
+        description: "Sex category, e.g. 'Males', 'Females'."
+      - name: marital status
+        description: "Marital status category, e.g. 'Unmarried', 'Married', 'Widowed/widower', 'Divorced', 'Separated'."
+      - name: contents
+        description: "The SSB metric label, e.g. 'Persons'."
+      - name: year
+        description: "Calendar year as a string."
+      - name: value
+        description: "The raw numeric value (person count) for the given sex, marital status, and year."
+
+  - name: bro_ssb_08092
+    description: "Bronze pass-through of SSB table 08092 — Storting election valid votes by region and party."
+    columns:
+      - name: region
+        description: "Electoral district or region name."
+      - name: political parties
+        description: "Name of the political party."
+      - name: contents
+        description: "The SSB metric label, e.g. 'Valid votes', 'Valid votes (per cent)'."
+      - name: every 4th year
+        description: "Election year as a string (every 4th year)."
+      - name: value
+        description: "The raw numeric value for votes or vote percentage."
+
+  - name: bro_ssb_08219
+    description: "Bronze pass-through of SSB table 08219 — elected representatives by sex, party, and district."
+    columns:
+      - name: region
+        description: "Electoral district or region name."
+      - name: sex
+        description: "Sex category, e.g. 'Males', 'Females'."
+      - name: political parties
+        description: "Name of the political party or electoral list."
+      - name: contents
+        description: "The SSB metric label, e.g. 'Elected representatives'."
+      - name: every 4th year
+        description: "Election year as a string (every 4th year)."
+      - name: value
+        description: "The raw numeric value (number of elected representatives)."
+
+  - name: bro_ssb_09624
+    description: "Bronze pass-through of SSB table 09624 — general election voter percentage by party and sex."
+    columns:
+      - name: political parties
+        description: "Name of the political party."
+      - name: sex
+        description: "Sex category, e.g. 'Males', 'Females'."
+      - name: contents
+        description: "The SSB metric label, e.g. 'Voters (per cent)'."
+      - name: every 4th year
+        description: "Election year as a string (every 4th year)."
+      - name: value
+        description: "The raw numeric value (voter percentage)."
+
+  - name: bro_ssb_10211
+    description: "Bronze pass-through of SSB table 10211 — population by sex and one-year age groups."
+    columns:
+      - name: age
+        description: "Age as a string, e.g. '0', '1', ..., '105+'."
+      - name: sex
+        description: "Sex category, e.g. 'Males', 'Females'."
+      - name: contents
+        description: "The SSB metric label, e.g. 'Persons'."
+      - name: year
+        description: "Calendar year as a string."
+      - name: value
+        description: "The raw numeric value (person count) for the given age, sex, and year."
+
+  - name: bro_ssb_10467
+    description: "Bronze pass-through of SSB table 10467 — persons born with a given first name per year."
+    columns:
+      - name: first name
+        description: "The first name."
+      - name: contents
+        description: "The SSB metric label, e.g. 'Born persons', 'Per cent of born persons'."
+      - name: year
+        description: "Calendar year as a string."
+      - name: value
+        description: "The raw numeric value (count or percentage of born persons with this name)."
+
+  - name: bro_ssb_10501
+    description: "Bronze pass-through of SSB table 10501 — living persons with a given first name per year."
+    columns:
+      - name: first name
+        description: "The first name."
+      - name: contents
+        description: "The SSB metric label, e.g. 'Persons'."
+      - name: year
+        description: "Calendar year as a string."
+      - name: value
+        description: "The raw numeric value (count of living persons with this name)."
+
+  - name: bro_ssb_13555
+    description: "Bronze pass-through of SSB table 13555 — general election party support by sex and education level."
+    columns:
+      - name: political parties
+        description: "Name of the political party."
+      - name: level of education
+        description: "Education level category, e.g. 'Basic school', 'Upper secondary education', 'University and college, short', 'University and college, long'."
+      - name: sex
+        description: "Sex category, e.g. 'Males', 'Females'."
+      - name: contents
+        description: "The SSB metric label, e.g. 'Per cent'."
+      - name: every 4th year
+        description: "Election year as a string (every 4th year)."
+      - name: value
+        description: "The raw numeric value (support percentage)."
