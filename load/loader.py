@@ -1,6 +1,7 @@
 """Fetch data, dump it into staging. That's it."""
 
 import pandas as pd
+from sqlalchemy import text
 from db import get_engine, get_schema, ensure_staging_schema
 
 
@@ -23,5 +24,9 @@ class DataLoader:
         schema = get_schema(target)
         ensure_staging_schema(engine, target)
 
-        df.to_sql(stg_table, engine, schema=schema, if_exists="replace", index=False)
+        with engine.connect() as conn:
+            conn.execute(text(f"DROP TABLE IF EXISTS {schema}.{stg_table} CASCADE"))
+            conn.commit()
+
+        df.to_sql(stg_table, engine, schema=schema, if_exists="append", index=False)
         print(f"[{stg_table}] Done.")
