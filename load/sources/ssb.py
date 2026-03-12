@@ -1,18 +1,35 @@
-"""SSB source — give it a table ID, it fetches the data."""
+"""SSB source — give it a table ID, it fetches all the data."""
 
+import requests
 import pandas as pd
 from pyjstat import pyjstat
 from loader import DataLoader
+
+BASE = "https://data.ssb.no/api/pxwebapi/v2/tables"
 
 
 class SSBLoader(DataLoader):
     """Loads any SSB table. Just pass the table ID."""
 
-    def __init__(self, table_id: str):
+    def __init__(self, table_id: str, codelists: dict[str, str] | None = None):
         self.source = "ssb"
         self.table = table_id
-        self.url = f"https://data.ssb.no/api/pxwebapi/v2/tables/{table_id}/data"
+        self.codelists = codelists or {}
+
+    def _build_query(self) -> dict:
+        meta = requests.get(f"{BASE}/{self.table}/metadata").json()
+        selection = []
+        for var_code in meta["id"]:
+            entry = {"variableCode": var_code, "valueCodes": ["*"]}
+            if var_code in self.codelists:
+                entry["codeList"] = self.codelists[var_code]
+            selection.append(entry)
+        return {"selection": selection, "outputFormat": "json_stat2"}
 
     def fetch(self) -> pd.DataFrame:
-        return pyjstat.Dataset.read(self.url).write("dataframe")
+        url = f"{BASE}/{self.table}/data"
+        query = self._build_query()
+        resp = requests.post(url, json=query)
+        resp.raise_for_status()
+        return pyjstat.Dataset.read(resp.text).write("dataframe")
 

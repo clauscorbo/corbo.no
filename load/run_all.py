@@ -10,7 +10,7 @@ from sources.ssb import SSBLoader
 
 # What to load
 LOADS = [
-    SSBLoader("08092"),
+    SSBLoader("08092", codelists={"Region": "vs_ValgdistrikterMedBergen"}),
     SSBLoader("08219"),
     SSBLoader("09624"),
 ]
