@@ -83,6 +83,6 @@ jobs:
           cp dbt/dbtproject_corbo/target/catalog.json site/public/dbt-docs/
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add site/public/dbt-docs/
+          git add -f site/public/dbt-docs/
           git diff --cached --quiet || git commit -m "chore: update dbt docs [skip ci]"
           git push

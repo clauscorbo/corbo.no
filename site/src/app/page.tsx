@@ -54,18 +54,18 @@ export default function Home() {
       {/* ─── Showcase section ─── */}
       <section
         ref={showcaseRef}
-        className="flex min-h-svh flex-col items-center justify-center px-6 py-32"
+        className="flex min-h-svh flex-col items-center px-6 py-32"
       >
         <div className="w-full max-w-5xl">
           {/* Heading */}
-          <div className="mb-16">
+          <div className="mb-20">
             <h1 className="text-2xl font-light text-white/90 sm:text-3xl">
               Products I&apos;d build for you
             </h1>
           </div>
 
           {/* Product list — vertical */}
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col gap-12">
             {products.map((product) => {
               const isExpanded = expandedId === product.id;
 
@@ -74,7 +74,7 @@ export default function Home() {
                   {/* Product card */}
                   <button
                     onClick={() => toggle(product)}
-                    className={`group relative flex w-full flex-col gap-3 rounded-2xl border px-10 py-8 text-left transition-all sm:w-80 sm:flex-shrink-0 ${
+                    className={`group relative flex w-full flex-col gap-4 rounded-2xl border px-12 py-10 text-left transition-all sm:w-80 sm:flex-shrink-0 ${
                       isExpanded
                         ? "border-white/15 bg-white/[0.04]"
                         : "border-white/[0.06] bg-white/[0.02] hover:border-white/15 hover:bg-white/[0.04]"
@@ -96,12 +96,17 @@ export default function Home() {
                   {/* Expanded detail panel — appears to the right */}
                   {isExpanded && (
                     <div className="flex-1 animate-in fade-in slide-in-from-left-4 duration-200">
-                      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] px-8 py-8">
+                      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] px-10 py-10">
                         {product.placeholder && (
                           <span className="mb-4 inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-light text-white/25">
                             Coming soon
                           </span>
                         )}
+
+                        {/* Product description */}
+                        <p className="text-sm font-light leading-relaxed text-white/50" style={{ marginBottom: 28 }}>
+                          {product.description}
+                        </p>
 
                         {/* Pipeline stages */}
                         <div className="flex flex-col gap-0">

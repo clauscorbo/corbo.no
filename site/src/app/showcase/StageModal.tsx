@@ -14,36 +14,77 @@ export default function StageModal({ stage, onClose }: StageModalProps) {
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-lg rounded-2xl border border-white/10 bg-zinc-950 p-10 shadow-2xl animate-in fade-in zoom-in-95 duration-200"
+        className="relative w-full rounded-2xl border border-white/10 bg-zinc-950 shadow-2xl animate-in fade-in zoom-in-95 duration-200"
+        style={{ maxWidth: 560, padding: "3.5rem 3rem" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close */}
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 text-white/30 transition-colors hover:text-white/70"
+          className="absolute text-white/30 transition-colors hover:text-white/70"
+          style={{ right: 20, top: 20 }}
         >
           ✕
         </button>
 
         {/* Title */}
-        <h3 className="text-lg font-medium text-white mb-3">{stage.name}</h3>
+        <h3 className="text-xl font-medium text-white" style={{ marginBottom: 20 }}>
+          {stage.name}
+        </h3>
 
         {/* Description */}
-        <p className="text-sm font-light leading-relaxed text-white/50 mb-6">
-          {stage.description}
+        <p
+          className="text-sm font-light leading-relaxed text-white/50"
+          style={{ marginBottom: 32 }}
+        >
+          {stage.longDescription ?? stage.description}
         </p>
 
-        {/* Skills */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {stage.skills.map((skill) => (
-            <span
-              key={skill}
-              className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-light text-white/60"
+        {/* Key skills */}
+        {stage.skills && stage.skills.length > 0 && (
+          <div style={{ marginBottom: 28 }}>
+            <p
+              className="text-xs font-medium uppercase tracking-wider text-white/25"
+              style={{ marginBottom: 12 }}
             >
-              {skill}
-            </span>
-          ))}
-        </div>
+              Key skills
+            </p>
+            <div className="flex flex-wrap" style={{ gap: 10 }}>
+              {stage.skills.map((s) => (
+                <span
+                  key={s}
+                  className="rounded-full border border-white/10 bg-white/5 text-xs font-light text-white/50"
+                  style={{ padding: "6px 14px" }}
+                >
+                  {s}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Tools */}
+        {stage.tools && stage.tools.length > 0 && (
+          <div style={{ marginBottom: 32 }}>
+            <p
+              className="text-xs font-medium uppercase tracking-wider text-white/25"
+              style={{ marginBottom: 12 }}
+            >
+              Tools
+            </p>
+            <div className="flex flex-wrap" style={{ gap: 10 }}>
+              {stage.tools.map((t) => (
+                <span
+                  key={t}
+                  className="rounded-full border border-blue-500/20 bg-blue-500/5 text-xs font-light text-blue-300/70"
+                  style={{ padding: "6px 14px" }}
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* GitHub link */}
         {stage.githubUrl && (
