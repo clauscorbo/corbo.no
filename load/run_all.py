@@ -26,10 +26,7 @@ LOADER_REGISTRY: dict[str, SSBLoader] = {
 }
 
 
-def load_tables(
-    table_names: list[str] | None = None,
-    target: str = "prod",
-) -> None:
+def load_tables(table_names: list[str],target: str = "prod") -> None:
     if table_names is None:
         loaders = list(LOADER_REGISTRY.values())
     else:
