@@ -9,10 +9,10 @@ BASE = "https://data.ssb.no/api/pxwebapi/v2/tables"
 
 
 class SSBLoader(DataLoader):
-    def __init__(self, table_id: str, codelists: dict[str, str]):
+    def __init__(self, table_id: str, codelists: dict[str, str] | None = None):
         self.source = "ssb"
         self.table = table_id
-        self.codelists = codelists
+        self.codelists = codelists or {}
 
     def _build_query(self) -> dict:
         meta = requests.get(f"{BASE}/{self.table}/metadata?lang=en").json()

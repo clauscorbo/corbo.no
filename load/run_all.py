@@ -10,10 +10,13 @@ import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 
+from loader import DataLoader
 from sources.ssb import SSBLoader
+from sources.norgesbank import NorgesBankLoader
 
 
-LOADER_REGISTRY: dict[str, SSBLoader] = {
+LOADER_REGISTRY: dict[str, DataLoader] = {
+    # SSB
     "stg_ssb_08092": SSBLoader("08092", codelists={"Region": "vs_ValgdistrikterMedBergen"}),
     "stg_ssb_08219": SSBLoader("08219"),
     "stg_ssb_09624": SSBLoader("09624"),
@@ -23,6 +26,22 @@ LOADER_REGISTRY: dict[str, SSBLoader] = {
     "stg_ssb_05803": SSBLoader("05803"),
     "stg_ssb_10467": SSBLoader("10467"),
     "stg_ssb_10501": SSBLoader("10501"),
+    # Norges Bank
+    "stg_nb_exr": NorgesBankLoader(
+        table="exr",
+        flow="EXR",
+        key="B.USD+EUR+GBP+SEK+DKK+RUB+JPY.NOK.SP",
+    ),
+    "stg_nb_ir": NorgesBankLoader(
+        table="ir",
+        flow="IR",
+        key="B.KPRA.OL+RR+SD.",
+    ),
+    "stg_nb_govt_keyfigures": NorgesBankLoader(
+        table="govt_keyfigures",
+        flow="GOVT_KEYFIGURES",
+        key="V_O+N_V+V_I+V_IRS+ATRE+ATRI..B.TBIL+_X+GBON+IRS",
+    ),
 }
 
 
