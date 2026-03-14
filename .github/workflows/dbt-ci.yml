@@ -34,12 +34,6 @@ jobs:
       - name: Install load dependencies
         run: pip install -r ../../load/requirements.txt
 
-      - name: Run load scripts (populate CI staging)
-        env:
-          DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
-          LOAD_TARGET: ci
-        run: python ../../load/run_all.py
-
       - name: Create profiles.yml
         env:
           DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
@@ -83,6 +77,37 @@ jobs:
       # 3. Copy baseline artifacts back to PR branch
       - name: Copy prod state artifacts
         run: cp -r ${{ github.workspace }}/prod-branch/dbt/dbtproject_corbo/prod-run-artifacts ./prod-run-artifacts
+
+      # 3b. Selective load
+      - name: Selective load
+        env:
+          DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+          LOAD_TARGET: ci
+        run: |
+          SOURCES=$(dbt ls --resource-types source --select +state:modified+ \
+            --defer --state=prod-run-artifacts --target ci \
+            --output json --quiet \
+            | python -c "
+          import sys, json
+          tables = []
+          for line in sys.stdin:
+              line = line.strip()
+              if not line: continue
+              try:
+                  node = json.loads(line)
+              except json.JSONDecodeError:
+                  continue
+              if node.get('resource_type') == 'source':
+                  tables.append(node['unique_id'].rsplit('.', 1)[-1])
+          print(' '.join(sorted(set(tables))))
+          ")
+
+          if [ -z "$SOURCES" ]; then
+            echo "No upstream sources found for modified models. Skipping load."
+          else
+            echo "Loading sources: $SOURCES"
+            python ../../load/run_all.py $SOURCES
+          fi
 
       # 4. Run only modified models on PR branch
       - name: dbt build (modified only)
