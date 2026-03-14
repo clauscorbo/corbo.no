@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   load-and-build:
@@ -75,14 +76,18 @@ jobs:
         working-directory: dbt/dbtproject_corbo
         run: dbt docs generate
 
-      - name: Commit dbt docs to repo
+      - name: Copy dbt docs
         run: |
           mkdir -p site/public/dbt-docs
           cp dbt/dbtproject_corbo/target/index.html site/public/dbt-docs/
           cp dbt/dbtproject_corbo/target/manifest.json site/public/dbt-docs/
           cp dbt/dbtproject_corbo/target/catalog.json site/public/dbt-docs/
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -f site/public/dbt-docs/
-          git diff --cached --quiet || git commit -m "chore: update dbt docs [skip ci]"
-          git push
+
+      - name: Create Pull Request for dbt docs
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "chore: update dbt docs [skip ci]"
+          branch: chore/update-dbt-docs
+          title: "chore: update dbt docs"
+          body: "Automated PR to update dbt docs from daily load."
+          delete-branch: true
