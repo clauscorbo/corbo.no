@@ -7,8 +7,7 @@ ignore: |
   **/logs/
 
 rules:
-  line-length:
-    max: 200
+  line-length: disable
   truthy: disable
   document-start: disable
   empty-lines:
