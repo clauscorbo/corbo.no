@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: bro_nb_exr
+    description: "Bronze pass-through of Norges Bank EXR — exchange rate statistics. Daily spot rates for selected currencies quoted against NOK."
+    columns:
+      - name: FREQ
+        description: "Frequency of the observation, e.g. 'B' (business day)."
+      - name: BASE_CUR
+        description: "Base currency in the currency pair quotation (the transaction currency), e.g. 'USD', 'EUR', 'GBP', 'SEK', 'DKK', 'RUB', 'JPY'."
+      - name: QUOTE_CUR
+        description: "Quote currency in the currency pair (the counter currency). Always 'NOK'."
+      - name: TENOR
+        description: "Tenor of the rate, e.g. 'SP' (spot)."
+      - name: TIME_PERIOD
+        description: "The date of the observation, e.g. '2026-03-13'."
+      - name: OBS_VALUE
+        description: "The observed exchange rate value."
+
+  - name: bro_nb_ir
+    description: "Bronze pass-through of Norges Bank IR — policy rate. Key policy rate (sight deposit rate), overnight lending rate, and reserve rate."
+    columns:
+      - name: FREQ
+        description: "Frequency of the observation, e.g. 'B' (business day)."
+      - name: INSTRUMENT_TYPE
+        description: "Type of financial instrument, e.g. 'KPRA' (key policy rate / sight deposit rate)."
+      - name: TENOR
+        description: "Rate type: 'SD' (policy rate), 'OL' (overnight lending rate), 'RR' (reserve rate)."
+      - name: UNIT_MEASURE
+        description: "Unit of measure. 'R' (rate / percentage)."
+      - name: TIME_PERIOD
+        description: "The date of the observation, e.g. '2026-03-12'."
+      - name: OBS_VALUE
+        description: "The observed interest rate value."
+
+  - name: bro_nb_govt_keyfigures
+    description: "Bronze pass-through of Norges Bank GOVT_KEYFIGURES — key government debt indicators. Nominal values, volumes issued, own holdings, and average time to refixing for treasury bills, government bonds, and interest rate swaps."
+    columns:
+      - name: UNIT_MEASURE
+        description: "The measure reported: 'V_O' (volume own holdings), 'N_V' (nominal value incl. own holdings), 'V_I' (volume issued), 'V_IRS' (volume interest rate swaps), 'ATRE' (avg time to refixing excl. IRS), 'ATRI' (avg time to refixing incl. IRS)."
+      - name: QUARTER
+        description: "Quarter-year identifier, e.g. 'Q4-2023'."
+      - name: FREQ
+        description: "Frequency of the observation, e.g. 'B' (business day)."
+      - name: INSTRUMENT_TYPE
+        description: "Type of financial instrument: 'TBIL' (treasury bills), 'GBON' (government bonds), '_X' (not specified / total), 'IRS' (interest rate swap)."
+      - name: TIME_PERIOD
+        description: "The date of the observation, e.g. '2023-12-31'."
+      - name: OBS_VALUE
+        description: "The observed value for the given measure and instrument."

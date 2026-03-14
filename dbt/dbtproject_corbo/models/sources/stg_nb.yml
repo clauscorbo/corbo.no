@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: stg_nb
+    schema: "{{ target.schema ~ '_staging' }}"
+    description: "Raw data loaded into staging by Python load scripts from Norges Bank (data.norges-bank.no)."
+    tables:
+      - name: stg_nb_exr
+        description: "Norges Bank exchange rate statistics. Daily spot rates for selected currencies quoted against NOK."
+      - name: stg_nb_ir
+        description: "Norges Bank policy rate (key policy rate, overnight lending rate, and reserve rate)."
+      - name: stg_nb_govt_keyfigures
+        description: "Key government debt indicators — nominal values, volumes issued, own holdings, and average time to refixing for treasury bills, government bonds, and interest rate swaps."
